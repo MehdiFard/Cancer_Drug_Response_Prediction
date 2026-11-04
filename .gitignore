@@ -1,5 +1,7 @@
 # Data and models: large, regenerable or downloaded
-data/raw/
+data/raw/**
+!data/raw/**/
+!data/raw/**/.gitkeep
 data/processed/*
 models/*
 !data/processed/.gitkeep
