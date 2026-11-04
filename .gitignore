@@ -1,0 +1,17 @@
+# Data and models: large, regenerable or downloaded
+data/raw/
+data/processed/*
+models/*
+!data/processed/.gitkeep
+!models/.gitkeep
+
+# R
+.Rhistory
+.RData
+.Rproj.user/
+*.Rproj
+.Rapp.history
+
+# OS / editor
+.DS_Store
+.vscode/
