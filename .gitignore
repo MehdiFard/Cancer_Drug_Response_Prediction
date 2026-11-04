@@ -17,3 +17,5 @@ models/*
 # OS / editor
 .DS_Store
 .vscode/
+
+temp/

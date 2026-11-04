@@ -1,0 +1,52 @@
+Warning message:
+package 'data.table' was built under R version 4.5.3 
+Warning message:
+package 'ggplot2' was built under R version 4.5.3 
+systemfonts and textshaping have been compiled with different versions of Freetype. Because of this, textshaping will not use the font cache provided by systemfontsKey: <drug, dataset>
+          drug     dataset method      cv_r2     cross_r2 single in_ensemble
+        <char>      <char> <char>      <num>        <num> <lgcl>      <lgcl>
+ 1:  ALPELISIB        CCLE glmnet 0.20006217  0.212658817   TRUE        TRUE
+ 2:  ALPELISIB  GDSC_broad glmnet 0.20913304  0.210030425  FALSE        TRUE
+ 3:  ALPELISIB GDSC_sanger ranger 0.09752190 -0.068112795  FALSE        TRUE
+ 4: BUPARLISIB        CCLE ranger 0.10598039  0.211322407   TRUE        TRUE
+ 5: BUPARLISIB  GDSC_broad glmnet 0.10631253  0.078727960  FALSE        TRUE
+ 6: BUPARLISIB GDSC_sanger ranger 0.07990707  0.067245208  FALSE        TRUE
+ 7:  CETUXIMAB        CCLE ranger 0.09946704 -0.001559444   TRUE        TRUE
+ 8:  CETUXIMAB  GDSC_broad ranger 0.13769330 -1.041215758  FALSE        TRUE
+ 9:  CETUXIMAB GDSC_sanger ranger 0.07091320 -0.090664397  FALSE        TRUE
+10:  ERLOTINIB        CCLE glmnet 0.15024228  0.235411156   TRUE        TRUE
+11:  ERLOTINIB  GDSC_broad ranger 0.17074368 -0.195713404  FALSE        TRUE
+12:  ERLOTINIB GDSC_sanger glmnet 0.27833306  0.121535809  FALSE        TRUE
+13: RIBOCICLIB        CCLE ranger 0.14141770 -0.112951385  FALSE        TRUE
+14: RIBOCICLIB  GDSC_broad glmnet 0.10449667  0.598385883   TRUE        TRUE
+15: TRAMETINIB        CCLE glmnet 0.38101088  0.506874765  FALSE        TRUE
+16: TRAMETINIB  GDSC_broad glmnet 0.45856467  0.525565098   TRUE        TRUE
+17: TRAMETINIB GDSC_sanger glmnet 0.51028781  0.288253946  FALSE        TRUE
+          drug    model     n     r2 pearson spearman
+        <char>   <char> <int>  <num>   <num>    <num>
+ 1:  ALPELISIB   single   141 -15.30   0.241    0.211
+ 2:  ALPELISIB ensemble   141 -15.09   0.286    0.247
+ 3: BUPARLISIB   single   170  -6.65  -0.110   -0.075
+ 4: BUPARLISIB ensemble   170  -6.89  -0.105   -0.064
+ 5:  CETUXIMAB   single    66 -10.87   0.150    0.075
+ 6:  CETUXIMAB ensemble    66  -9.72   0.309    0.315
+ 7:  ERLOTINIB   single    25  -3.37   0.509    0.565
+ 8:  ERLOTINIB ensemble    25  -3.02   0.526    0.455
+ 9: RIBOCICLIB   single   172 -14.93  -0.128   -0.094
+10: RIBOCICLIB ensemble   172 -14.71  -0.119   -0.110
+11: TRAMETINIB   single    37  -0.61   0.547    0.502
+12: TRAMETINIB ensemble    37  -0.72   0.314    0.169
+                                                        models
+                                                        <char>
+ 1:                                              CCLE (glmnet)
+ 2: CCLE (glmnet) + GDSC_broad (glmnet) + GDSC_sanger (ranger)
+ 3:                                              CCLE (ranger)
+ 4: CCLE (ranger) + GDSC_broad (glmnet) + GDSC_sanger (ranger)
+ 5:                                              CCLE (ranger)
+ 6: CCLE (ranger) + GDSC_broad (ranger) + GDSC_sanger (ranger)
+ 7:                                              CCLE (glmnet)
+ 8: CCLE (glmnet) + GDSC_broad (ranger) + GDSC_sanger (glmnet)
+ 9:                                        GDSC_broad (glmnet)
+10:                        CCLE (ranger) + GDSC_broad (glmnet)
+11:                                        GDSC_broad (glmnet)
+12: CCLE (glmnet) + GDSC_broad (glmnet) + GDSC_sanger (glmnet)

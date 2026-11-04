@@ -54,6 +54,9 @@ Response values are AUC: lower = more sensitive. Format details: `data/raw/READM
 6. **GDSC has duplicate measurements** for some cell lines (Erlotinib, Trametinib).
 7. **Mutation formats differ**: CCLE has `Variant_Classification`; it is empty in GDSC; PDX writes `C1277G`
    instead of `p.C1277G` and has no gene names. Gene-level 0/1 encoding avoids most mismatches.
+8. **PDX CNV is almost all neutral**: only ~1% of PDX values are gains or losses (0.7% / 0.3%),
+   against 40–55% in the cell lines. CNV features are nearly constant in PDX, so models that lean
+   on CNV will transfer poorly.
 
 ## Not included
 `ccle_mut.rds` used in the course's Simple Example PDF was shared separately and is not in the public archive.

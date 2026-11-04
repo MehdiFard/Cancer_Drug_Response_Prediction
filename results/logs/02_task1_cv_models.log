@@ -1,0 +1,89 @@
+Warning message:
+package 'data.table' was built under R version 4.5.3 
+Loading required package: ggplot2
+Loading required package: lattice
+Warning messages:
+1: package 'ggplot2' was built under R version 4.5.3 
+2: package 'lattice' was built under R version 4.5.3 
+ALPELISIB / CCLE / glmnet: 584 samples, 12528 features
+ALPELISIB / CCLE / ranger: 584 samples, 12528 features
+BUPARLISIB / CCLE / glmnet: 552 samples, 12348 features
+BUPARLISIB / CCLE / ranger: 552 samples, 12348 features
+CETUXIMAB / CCLE / glmnet: 604 samples, 12374 features
+CETUXIMAB / CCLE / ranger: 604 samples, 12374 features
+ERLOTINIB / CCLE / glmnet: 604 samples, 12153 features
+ERLOTINIB / CCLE / ranger: 604 samples, 12153 features
+RIBOCICLIB / CCLE / glmnet: 42 samples, 11598 features
+RIBOCICLIB / CCLE / ranger: 42 samples, 11598 features
+TRAMETINIB / CCLE / glmnet: 659 samples, 12434 features
+TRAMETINIB / CCLE / ranger: 659 samples, 12434 features
+ALPELISIB / GDSC_broad / glmnet: 449 samples, 12988 features
+ALPELISIB / GDSC_broad / ranger: 449 samples, 12988 features
+BUPARLISIB / GDSC_broad / glmnet: 424 samples, 12742 features
+BUPARLISIB / GDSC_broad / ranger: 424 samples, 12742 features
+CETUXIMAB / GDSC_broad / glmnet: 455 samples, 13062 features
+CETUXIMAB / GDSC_broad / ranger: 455 samples, 13062 features
+ERLOTINIB / GDSC_broad / glmnet: 456 samples, 12779 features
+ERLOTINIB / GDSC_broad / ranger: 456 samples, 12779 features
+RIBOCICLIB / GDSC_broad / glmnet: 36 samples, 13697 features
+RIBOCICLIB / GDSC_broad / ranger: 36 samples, 13697 features
+TRAMETINIB / GDSC_broad / glmnet: 494 samples, 12946 features
+TRAMETINIB / GDSC_broad / ranger: 494 samples, 12946 features
+ALPELISIB / GDSC_sanger / glmnet: 211 samples, 13372 features
+ALPELISIB / GDSC_sanger / ranger: 211 samples, 13372 features
+BUPARLISIB / GDSC_sanger / glmnet: 196 samples, 13564 features
+BUPARLISIB / GDSC_sanger / ranger: 196 samples, 13564 features
+CETUXIMAB / GDSC_sanger / glmnet: 255 samples, 13128 features
+CETUXIMAB / GDSC_sanger / ranger: 255 samples, 13128 features
+ERLOTINIB / GDSC_sanger / glmnet: 244 samples, 12942 features
+ERLOTINIB / GDSC_sanger / ranger: 244 samples, 12942 features
+Skipping RIBOCICLIB / GDSC_sanger: only 3 samples
+TRAMETINIB / GDSC_sanger / glmnet: 273 samples, 12954 features
+TRAMETINIB / GDSC_sanger / ranger: 273 samples, 12954 features
+Warning messages:
+1: In nominalTrainWorkflow(x = x, y = y, wts = weights, info = trainInfo,  :
+  There were missing values in resampled performance measures.
+2: In nominalTrainWorkflow(x = x, y = y, wts = weights, info = trainInfo,  :
+  There were missing values in resampled performance measures.
+3: In nominalTrainWorkflow(x = x, y = y, wts = weights, info = trainInfo,  :
+  There were missing values in resampled performance measures.
+4: In nominalTrainWorkflow(x = x, y = y, wts = weights, info = trainInfo,  :
+  There were missing values in resampled performance measures.
+systemfonts and textshaping have been compiled with different versions of Freetype. Because of this, textshaping will not use the font cache provided by systemfonts          drug     dataset method     n    r2 pearson   best
+        <char>      <char> <char> <int> <num>   <num> <lgcl>
+ 1:  ALPELISIB        CCLE glmnet   584 0.200   0.447   TRUE
+ 2:  ALPELISIB        CCLE ranger   584 0.123   0.356  FALSE
+ 3: BUPARLISIB        CCLE glmnet   552 0.100   0.317  FALSE
+ 4: BUPARLISIB        CCLE ranger   552 0.106   0.331   TRUE
+ 5:  CETUXIMAB        CCLE glmnet   604 0.082   0.288  FALSE
+ 6:  CETUXIMAB        CCLE ranger   604 0.099   0.323   TRUE
+ 7:  ERLOTINIB        CCLE glmnet   604 0.150   0.388   TRUE
+ 8:  ERLOTINIB        CCLE ranger   604 0.138   0.379  FALSE
+ 9: RIBOCICLIB        CCLE glmnet    42 0.125   0.387  FALSE
+10: RIBOCICLIB        CCLE ranger    42 0.141   0.389   TRUE
+11: TRAMETINIB        CCLE glmnet   659 0.381   0.618   TRUE
+12: TRAMETINIB        CCLE ranger   659 0.333   0.604  FALSE
+13:  ALPELISIB  GDSC_broad glmnet   449 0.209   0.461   TRUE
+14:  ALPELISIB  GDSC_broad ranger   449 0.110   0.338  FALSE
+15: BUPARLISIB  GDSC_broad glmnet   424 0.106   0.336   TRUE
+16: BUPARLISIB  GDSC_broad ranger   424 0.097   0.314  FALSE
+17:  CETUXIMAB  GDSC_broad glmnet   455 0.072   0.276  FALSE
+18:  CETUXIMAB  GDSC_broad ranger   455 0.138   0.381   TRUE
+19:  ERLOTINIB  GDSC_broad glmnet   456 0.161   0.406  FALSE
+20:  ERLOTINIB  GDSC_broad ranger   456 0.171   0.423   TRUE
+21: RIBOCICLIB  GDSC_broad glmnet    36 0.104   0.325   TRUE
+22: RIBOCICLIB  GDSC_broad ranger    36 0.055   0.257  FALSE
+23: TRAMETINIB  GDSC_broad glmnet   494 0.459   0.681   TRUE
+24: TRAMETINIB  GDSC_broad ranger   494 0.388   0.657  FALSE
+25:  ALPELISIB GDSC_sanger glmnet   211 0.046   0.255  FALSE
+26:  ALPELISIB GDSC_sanger ranger   211 0.098   0.320   TRUE
+27: BUPARLISIB GDSC_sanger glmnet   196 0.077   0.286  FALSE
+28: BUPARLISIB GDSC_sanger ranger   196 0.080   0.283   TRUE
+29:  CETUXIMAB GDSC_sanger glmnet   255 0.028   0.168  FALSE
+30:  CETUXIMAB GDSC_sanger ranger   255 0.071   0.284   TRUE
+31:  ERLOTINIB GDSC_sanger glmnet   244 0.278   0.532   TRUE
+32:  ERLOTINIB GDSC_sanger ranger   244 0.271   0.531  FALSE
+33: TRAMETINIB GDSC_sanger glmnet   273 0.510   0.718   TRUE
+34: TRAMETINIB GDSC_sanger ranger   273 0.493   0.725  FALSE
+          drug     dataset method     n    r2 pearson   best
+        <char>      <char> <char> <int> <num>   <num> <lgcl>
