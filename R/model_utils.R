@@ -29,20 +29,72 @@ reg_metrics <- function(obs, pred) {
   )
 }
 
-# Train one model with caret. No preProcess: glmnet standardizes the features
-# internally (using the training data only) and random forest doesn't need it.
+# caret's built-in xgboost models break with xgboost 3.x, so this is a small
+# custom caret model that calls xgboost directly. The booster is wrapped in a list
+# because caret tries to add fields to it, which xgboost 3 doesn't allow.
+xgb_caret <- list(
+  label = "xgboost", library = "xgboost", type = "Regression",
+  parameters = data.frame(parameter = c("nrounds", "max_depth", "eta"), class = "numeric",
+                          label = c("Rounds", "Max depth", "Learning rate")),
+  grid = function(x, y, len = NULL, search = "grid") {
+    expand.grid(nrounds = 150, max_depth = c(2, 4), eta = 0.1)
+  },
+  fit = function(x, y, wts, param, lev, last, classProbs, nthread = 1, ...) {
+    params <- list(objective = "reg:squarederror", max_depth = param$max_depth, eta = param$eta,
+                   subsample = 0.8, colsample_bytree = 0.2, tree_method = "hist", nthread = nthread)
+    booster <- xgboost::xgb.train(params = params, nrounds = param$nrounds, verbose = 0,
+                                  data = xgboost::xgb.DMatrix(as.matrix(x), label = y))
+    list(booster = booster)
+  },
+  predict = function(modelFit, newdata, submodels = NULL) {
+    predict(modelFit$booster, xgboost::xgb.DMatrix(as.matrix(newdata)))
+  },
+  prob = NULL,
+  sort = function(x) x[order(x$max_depth), ]
+)
+
+# Train one model with caret.
+# Scaling: glmnet standardizes the features itself and the tree models don't need it.
+# kNN, SVM and PLS get center + scale inside train, so it's learned on each training
+# fold only ("zv" first drops columns that happen to be constant in a fold).
 train_model <- function(x, y, method, ctrl, n_threads = 1) {
-  if (method == "glmnet") {
-    caret::train(x, y, method = "glmnet", trControl = ctrl, tuneLength = 5)
-  } else if (method == "ranger") {
-    mtry <- unique(round(sqrt(ncol(x)) * c(0.5, 1, 2)))
-    caret::train(x, y, method = "ranger", trControl = ctrl,
-                 num.trees = 500, num.threads = n_threads,
-                 tuneGrid = expand.grid(mtry = mtry, splitrule = "variance",
-                                        min.node.size = 5))
-  } else {
+  scale_pp <- c("zv", "center", "scale")
+  switch(method,
+    glmnet = caret::train(x, y, method = "glmnet", trControl = ctrl, tuneLength = 5),
+    ranger = caret::train(x, y, method = "ranger", trControl = ctrl,
+                          num.trees = 500, num.threads = n_threads,
+                          tuneGrid = expand.grid(mtry = unique(round(sqrt(ncol(x)) * c(0.5, 1, 2))),
+                                                 splitrule = "variance", min.node.size = 5)),
+    knn = caret::train(x, y, method = "knn", trControl = ctrl, preProcess = scale_pp,
+                       tuneGrid = data.frame(k = c(5, 10, 20, 40))),
+    svmRadial = caret::train(x, y, method = "svmRadial", trControl = ctrl, preProcess = scale_pp,
+                             tuneLength = 5),
+    pls = caret::train(x, y, method = "simpls", trControl = ctrl, preProcess = scale_pp,
+                       tuneGrid = data.frame(ncomp = 1:10)),
+    xgboost = caret::train(x, y, method = xgb_caret, trControl = ctrl, nthread = n_threads),
     stop("unknown method: ", method)
+  )
+}
+
+# Methods that use their own threads; the others run CV folds in parallel instead
+threaded_methods <- c("ranger", "xgboost")
+
+# Drop what a trained model doesn't need for predicting, before saving it.
+# - the training matrix (caret keeps it, glmnet keeps another copy in its call)
+# - PLS keeps the training data and a formula table of features x features (>1 GB here)
+#   and needs them to predict, so we predict straight from its coefficients instead:
+#   y = (x - mean of x) %*% B + mean of y
+slim_fit <- function(fit) {
+  fit$trainingData <- NULL
+  if (is.list(fit$finalModel)) fit$finalModel$call <- NULL   # SVM is an S4 object without one
+  if (inherits(fit$finalModel, "mvr")) {
+    fit$finalModel[c("model", "terms", "fitted.values", "residuals")] <- NULL
+    fit$modelInfo$predict <- function(modelFit, newdata, submodels = NULL) {
+      B <- modelFit$coefficients[, 1, modelFit$ncomp]
+      as.vector(sweep(as.matrix(newdata), 2, modelFit$Xmeans) %*% B + modelFit$Ymeans)
+    }
   }
+  fit
 }
 
 # Predict from a saved model on any dataset (features filtered the same way as in training)

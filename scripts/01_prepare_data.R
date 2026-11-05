@@ -127,14 +127,14 @@ for (ds in datasets) {
   stopifnot(!anyNA(gex), !anyNA(cnv), !anyNA(mut), !anyNA(drug))
 
   saveRDS(list(gex = gex, cnv = cnv, mut = mut, drug = drug),
-          file.path(out_dir, paste0(ds, "_clean.rds")))
+          file.path(out_dir, paste0(ds, "_clean_multiomics.rds")))
 }
 
 
 # ---- Quick check of what we saved ----
 
 clean <- lapply(setNames(datasets, datasets),
-                function(ds) readRDS(file.path(out_dir, paste0(ds, "_clean.rds"))))
+                function(ds) readRDS(file.path(out_dir, paste0(ds, "_clean_multiomics.rds"))))
 
 # Samples and genes per omic (should be the same within each dataset)
 cat("\n== Samples, and genes per omic (genes = expression) ==\n")

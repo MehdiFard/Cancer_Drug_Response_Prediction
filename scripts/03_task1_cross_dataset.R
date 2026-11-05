@@ -19,7 +19,7 @@ pal      <- c(CCLE = "#2a78d6", GDSC_broad = "#eb6834", GDSC_sanger = "#1baf7a")
 cv   <- fread("results/tables/task1_cv_metrics.csv")
 best <- cv[best == TRUE]
 data <- lapply(setNames(datasets, datasets),
-               function(ds) readRDS(file.path("data/processed", paste0(ds, "_clean.rds"))))
+               function(ds) readRDS(file.path("data/processed", paste0(ds, "_clean_multiomics.rds"))))
 
 res <- list()
 for (i in seq_len(nrow(best))) {

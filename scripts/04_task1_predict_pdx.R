@@ -25,7 +25,7 @@ drugs <- c("ALPELISIB", "BUPARLISIB", "CETUXIMAB", "ERLOTINIB", "RIBOCICLIB", "T
 
 cv    <- fread("results/tables/task1_cv_metrics.csv")[best == TRUE]
 cross <- fread("results/tables/task1_cross_dataset_metrics.csv")
-pdx   <- readRDS("data/processed/PDX_all_clean.rds")
+pdx   <- readRDS("data/processed/PDX_all_clean_multiomics.rds")
 
 # Pick the single best model per drug from the cell line results
 gen <- cross[, .(cross_r2 = mean(r2)), by = .(drug, dataset = train)]
