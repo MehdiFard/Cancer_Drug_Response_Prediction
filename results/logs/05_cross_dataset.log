@@ -1,0 +1,38 @@
+Warning message:
+package ‘data.table’ was built under R version 4.5.3 
+
+   feature_set correction mean_r2
+        <char>     <char>   <num>
+1:  multiomics       none   0.250
+2:  multiomics    regress   0.268
+3:       panel       none   0.136
+4:       panel    regress   0.141
+    feature_set correction   role     dataset mean_r2
+         <char>     <char> <char>      <char>   <num>
+ 1:  multiomics       none  train        CCLE   0.285
+ 2:  multiomics       none  train  GDSC_broad   0.322
+ 3:  multiomics       none  train GDSC_sanger   0.131
+ 4:  multiomics    regress  train        CCLE   0.329
+ 5:  multiomics    regress  train  GDSC_broad   0.335
+ 6:  multiomics    regress  train GDSC_sanger   0.126
+ 7:       panel       none  train        CCLE   0.239
+ 8:       panel       none  train  GDSC_broad   0.133
+ 9:       panel       none  train GDSC_sanger   0.027
+10:       panel    regress  train        CCLE   0.248
+11:       panel    regress  train  GDSC_broad   0.140
+12:       panel    regress  train GDSC_sanger   0.025
+13:  multiomics       none   test  GDSC_broad   0.249
+14:  multiomics       none   test GDSC_sanger   0.206
+15:  multiomics       none   test        CCLE   0.290
+16:  multiomics    regress   test  GDSC_broad   0.292
+17:  multiomics    regress   test GDSC_sanger   0.207
+18:  multiomics    regress   test        CCLE   0.299
+19:       panel       none   test  GDSC_broad   0.101
+20:       panel       none   test GDSC_sanger   0.180
+21:       panel       none   test        CCLE   0.132
+22:       panel    regress   test  GDSC_broad   0.114
+23:       panel    regress   test GDSC_sanger   0.174
+24:       panel    regress   test        CCLE   0.138
+    feature_set correction   role     dataset mean_r2
+         <char>     <char> <char>      <char>   <num>
+

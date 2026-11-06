@@ -1,6 +1,10 @@
-# Task 1: read and prepare the data
+# Read and prepare the data
 # Reads expression, CNV, mutations and drug response for all four datasets,
-# fixes the known data problems and saves one clean .rds per dataset in data/processed/.
+# fixes the known data problems and saves clean .rds files in data/processed/:
+#   <dataset>_clean_multiomics.rds  expression + CNV + mutations, all shared genes
+#   <dataset>_clean_panel.rds       CNV + mutations of the 882 oncoKB cancer genes only,
+#                                   like the gene panels used in cancer diagnostics
+#   PDX_xeva_response.rds           extra PDX response measures (mRECIST etc.) from Xeva
 #
 # Only steps that don't depend on the training set happen here. Feature filtering
 # (top variable genes etc.) has to be learned on the training data only, so it lives
@@ -39,10 +43,10 @@ read_drugs <- function(dataset) {
 }
 
 # Mutations come as one row per mutation. We only need sample, gene and protein change.
-# Pitfall 7: PDX has its own format, the gene ID is in "Gene" and protein changes
+# PDX has its own format, the gene ID is in "Gene" and protein changes
 # are written without the "p." (C1277G instead of p.C1277G).
-read_mut <- function(dataset) {
-  path <- file.path(raw_dir, dataset, "all_intersect_genes", "mut.tsv.gz")
+read_mut <- function(dataset, folder = "all_intersect_genes") {
+  path <- file.path(raw_dir, dataset, folder, "mut.tsv.gz")
   if (dataset == "PDX_all") {
     dt <- fread(path, select = c("sample_id", "Gene", "protein_change"))
     setnames(dt, "Gene", "gene_id")
@@ -94,7 +98,7 @@ for (ds in datasets) {
   gex <- gex[samples, ]
   cnv <- cnv[samples, ]
 
-  # Pitfall 1: PDX expression is raw FPKM (up to ~325,000). The cell lines are on a
+  # PDX expression is raw FPKM (up to ~325,000). The cell lines are on a
   # log2(x + 1) scale (0 to ~16; the course says log10, but the values don't fit that).
   # Same transform for PDX puts it on the same scale.
   if (ds == "PDX_all") gex <- log2(gex + 1)
@@ -114,10 +118,10 @@ for (ds in datasets) {
 
   mut <- binarize_mut(mut, samples, genes = colnames(gex))
 
-  # Pitfall 2: most PDX drug values are empty, drop those rows.
-  # Pitfall 6: some GDSC cell lines were measured twice for Erlotinib and Trametinib.
+  # Most PDX drug values are empty, drop those rows.
+  # Some GDSC cell lines were measured twice for Erlotinib and Trametinib.
   # We take the mean. For Trametinib the two values often disagree a lot, see the notes.
-  # Pitfall 4: both GDSC folders have the same drug files, but each dataset only keeps
+  # Both GDSC folders have the same drug files, but each dataset only keeps
   # its own cell lines here, so that's fine.
   drug <- drug[!is.na(value) & sample_id %in% samples,
                .(value = mean(value)), by = .(sample_id, drug)]
@@ -128,7 +132,45 @@ for (ds in datasets) {
 
   saveRDS(list(gex = gex, cnv = cnv, mut = mut, drug = drug),
           file.path(out_dir, paste0(ds, "_clean_multiomics.rds")))
+
+  # ---- Gene panel: CNV and mutations of the oncoKB genes ----
+  # Same steps, no expression. Samples only need CNV and mutations here, so CCLE keeps
+  # more cell lines than in the multi-omics data.
+  panel_dir <- file.path(raw_dir, ds, "oncoKB_intersect_genes")
+  cnv_p <- read_wide(file.path(panel_dir, "cnv.tsv.gz"))
+  mut_p <- read_mut(ds, "oncoKB_intersect_genes")
+  samples_p <- sort(intersect(rownames(cnv_p), unique(mut_p$sample_id)))
+  cnv_p <- cnv_p[samples_p, ]
+  if (anyNA(cnv_p)) cnv_p <- round(knn_impute(cnv_p))
+  mut_p <- binarize_mut(mut_p, samples_p, genes = colnames(cnv_p))
+  drug_p <- read_drugs(ds)[!is.na(value) & sample_id %in% samples_p, .(value = mean(value)), by = .(sample_id, drug)]
+  stopifnot(!anyNA(cnv_p), !anyNA(mut_p), !anyNA(drug_p))
+
+  saveRDS(list(cnv = cnv_p, mut = mut_p, drug = drug_p),
+          file.path(out_dir, paste0(ds, "_clean_panel.rds")))
 }
+
+
+# ---- Extra PDX responses from Xeva ----
+# The curated Novartis PDX data (Xeva / ORCESTRA, https://zenodo.org/records/19354439,
+# file Xeva_PDXE_tsv.tar.gz in data/raw/xeva/) has the same PDX models with other response
+# measures. The course PDX value is essentially Xeva's best response (Spearman 0.93-0.99):
+# the best % change in tumour volume, rescaled. mRECIST classes the same change like in the
+# clinic: CR complete response, PR partial response, SD stable disease, PD progressive disease.
+
+xeva_tar <- file.path(raw_dir, "xeva", "Xeva_PDXE_tsv.tar.gz")
+xeva_ids <- c(ALPELISIB = "BYL719", BUPARLISIB = "BKM120", CETUXIMAB = "cetuximab",
+              ERLOTINIB = "erlotinib", RIBOCICLIB = "LEE011", TRAMETINIB = "trametinib")
+xd <- file.path(tempdir(), "xeva")
+untar(xeva_tar, files = paste0("Xeva_PDXE_tsv/", c("model.tsv", "sensitivity_model.tsv")), exdir = xd)
+xeva <- merge(fread(file.path(xd, "Xeva_PDXE_tsv", "model.tsv"))[, .(model.id, sample_id = patient.id, drug)],
+              fread(file.path(xd, "Xeva_PDXE_tsv", "sensitivity_model.tsv")), by = "model.id")
+pdx_samples <- rownames(readRDS(file.path(out_dir, "PDX_all_clean_multiomics.rds"))$gex)
+xeva <- xeva[drug %in% xeva_ids & sample_id %in% pdx_samples]
+xeva[, drug := names(xeva_ids)[match(drug, xeva_ids)]]
+xeva[mRECIST == "", mRECIST := NA]
+saveRDS(xeva[, .(sample_id, drug, mRECIST, best.response, best.average.response, slope, AUC)],
+        file.path(out_dir, "PDX_xeva_response.rds"))
 
 
 # ---- Quick check of what we saved ----
@@ -150,8 +192,18 @@ cat("\n== Median number of mutated genes per sample (non-silent) ==\n")
 sapply(clean, function(x) median(rowSums(x$mut)))
 
 # Samples with a response, per drug.
-# Pitfall 3: Ribociclib has very few cell lines. Pitfall 2: Erlotinib and Trametinib
+# Ribociclib has very few cell lines. Erlotinib and Trametinib
 # have very few PDX samples. Keep both in mind when reading the results.
 cat("\n== Samples with a drug response, per drug ==\n")
 dcast(rbindlist(lapply(clean, `[[`, "drug"), idcol = "dataset"),
       drug ~ dataset, fun.aggregate = length)
+
+# Gene panel
+panel <- lapply(setNames(datasets, datasets),
+                function(ds) readRDS(file.path(out_dir, paste0(ds, "_clean_panel.rds"))))
+cat("\n== Gene panel: samples, CNV genes, mutated genes per sample (median) ==\n")
+sapply(panel, function(x) c(samples = nrow(x$cnv), genes = ncol(x$cnv), mutated = median(rowSums(x$mut))))
+
+# PDX response classes from Xeva (PD = tumour kept growing)
+cat("\n== PDX mRECIST classes per drug (Xeva) ==\n")
+readRDS(file.path(out_dir, "PDX_xeva_response.rds"))[, table(drug, mRECIST, useNA = "ifany")]

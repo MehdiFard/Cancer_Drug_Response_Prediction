@@ -1,0 +1,15 @@
+Warning message:
+package ‘data.table’ was built under R version 4.5.3 
+Loading required package: ggplot2
+Loading required package: lattice
+Warning messages:
+1: package ‘ggplot2’ was built under R version 4.5.3 
+2: package ‘lattice’ was built under R version 4.5.3 
+ALPELISIB / CCLE / glmnet: 584 samples, 12528 features
+ALPELISIB / CCLE / ranger: 584 samples, 12528 features
+ALPELISIB / CCLE / knn: 584 samples, 12528 features
+ALPELISIB / CCLE / svmRadial: 584 samples, 12528 features
+ALPELISIB / CCLE / pls: 584 samples, 12528 features
+ALPELISIB / CCLE / xgboost: 584 samples, 12528 features
+BUPARLISIB / CCLE / glmnet: 552 samples, 12348 features
+BUPARLISIB / CCLE / ranger: 552 samples, 12348 features

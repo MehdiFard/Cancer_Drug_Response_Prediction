@@ -1,0 +1,286 @@
+Warning message:
+package ‘data.table’ was built under R version 4.5.3 
+Loading required package: ggplot2
+Loading required package: lattice
+Warning messages:
+1: package ‘ggplot2’ was built under R version 4.5.3 
+2: package ‘lattice’ was built under R version 4.5.3 
+multiomics / none / ALPELISIB / CCLE / svmRadial: 584 samples, 12528 features
+multiomics / none / ALPELISIB / CCLE / glmnet: 584 samples, 12528 features
+multiomics / none / ALPELISIB / CCLE / pls: 584 samples, 12528 features
+multiomics / none / BUPARLISIB / CCLE / svmRadial: 552 samples, 12348 features
+multiomics / none / BUPARLISIB / CCLE / glmnet: 552 samples, 12348 features
+multiomics / none / BUPARLISIB / CCLE / pls: 552 samples, 12348 features
+multiomics / none / CETUXIMAB / CCLE / svmRadial: 604 samples, 12374 features
+multiomics / none / CETUXIMAB / CCLE / glmnet: 604 samples, 12374 features
+multiomics / none / CETUXIMAB / CCLE / pls: 604 samples, 12374 features
+multiomics / none / ERLOTINIB / CCLE / svmRadial: 604 samples, 12153 features
+multiomics / none / ERLOTINIB / CCLE / glmnet: 604 samples, 12153 features
+multiomics / none / ERLOTINIB / CCLE / pls: 604 samples, 12153 features
+multiomics / none / RIBOCICLIB / CCLE / svmRadial: 42 samples, 11598 features
+multiomics / none / RIBOCICLIB / CCLE / glmnet: 42 samples, 11598 features
+multiomics / none / RIBOCICLIB / CCLE / pls: 42 samples, 11598 features
+multiomics / none / TRAMETINIB / CCLE / svmRadial: 659 samples, 12434 features
+multiomics / none / TRAMETINIB / CCLE / glmnet: 659 samples, 12434 features
+multiomics / none / TRAMETINIB / CCLE / pls: 659 samples, 12434 features
+multiomics / regress / ALPELISIB / CCLE / svmRadial: 584 samples, 12528 features
+multiomics / regress / ALPELISIB / CCLE / glmnet: 584 samples, 12528 features
+multiomics / regress / ALPELISIB / CCLE / pls: 584 samples, 12528 features
+multiomics / regress / BUPARLISIB / CCLE / svmRadial: 552 samples, 12348 features
+multiomics / regress / BUPARLISIB / CCLE / glmnet: 552 samples, 12348 features
+multiomics / regress / BUPARLISIB / CCLE / pls: 552 samples, 12348 features
+multiomics / regress / CETUXIMAB / CCLE / svmRadial: 604 samples, 12374 features
+multiomics / regress / CETUXIMAB / CCLE / glmnet: 604 samples, 12374 features
+multiomics / regress / CETUXIMAB / CCLE / pls: 604 samples, 12374 features
+multiomics / regress / ERLOTINIB / CCLE / svmRadial: 604 samples, 12153 features
+multiomics / regress / ERLOTINIB / CCLE / glmnet: 604 samples, 12153 features
+multiomics / regress / ERLOTINIB / CCLE / pls: 604 samples, 12153 features
+multiomics / regress / RIBOCICLIB / CCLE / svmRadial: 42 samples, 11598 features
+multiomics / regress / RIBOCICLIB / CCLE / glmnet: 42 samples, 11598 features
+multiomics / regress / RIBOCICLIB / CCLE / pls: 42 samples, 11598 features
+multiomics / regress / TRAMETINIB / CCLE / svmRadial: 659 samples, 12434 features
+multiomics / regress / TRAMETINIB / CCLE / glmnet: 659 samples, 12434 features
+multiomics / regress / TRAMETINIB / CCLE / pls: 659 samples, 12434 features
+multiomics / none / ALPELISIB / GDSC_broad / svmRadial: 449 samples, 12988 features
+multiomics / none / ALPELISIB / GDSC_broad / glmnet: 449 samples, 12988 features
+multiomics / none / ALPELISIB / GDSC_broad / pls: 449 samples, 12988 features
+multiomics / none / BUPARLISIB / GDSC_broad / svmRadial: 424 samples, 12742 features
+multiomics / none / BUPARLISIB / GDSC_broad / glmnet: 424 samples, 12742 features
+multiomics / none / BUPARLISIB / GDSC_broad / pls: 424 samples, 12742 features
+multiomics / none / CETUXIMAB / GDSC_broad / svmRadial: 455 samples, 13062 features
+multiomics / none / CETUXIMAB / GDSC_broad / glmnet: 455 samples, 13062 features
+multiomics / none / CETUXIMAB / GDSC_broad / pls: 455 samples, 13062 features
+multiomics / none / ERLOTINIB / GDSC_broad / svmRadial: 456 samples, 12779 features
+multiomics / none / ERLOTINIB / GDSC_broad / glmnet: 456 samples, 12779 features
+multiomics / none / ERLOTINIB / GDSC_broad / pls: 456 samples, 12779 features
+multiomics / none / RIBOCICLIB / GDSC_broad / svmRadial: 36 samples, 13697 features
+multiomics / none / RIBOCICLIB / GDSC_broad / glmnet: 36 samples, 13697 features
+multiomics / none / RIBOCICLIB / GDSC_broad / pls: 36 samples, 13697 features
+multiomics / none / TRAMETINIB / GDSC_broad / svmRadial: 494 samples, 12946 features
+multiomics / none / TRAMETINIB / GDSC_broad / glmnet: 494 samples, 12946 features
+multiomics / none / TRAMETINIB / GDSC_broad / pls: 494 samples, 12946 features
+multiomics / regress / ALPELISIB / GDSC_broad / svmRadial: 449 samples, 12988 features
+multiomics / regress / ALPELISIB / GDSC_broad / glmnet: 449 samples, 12988 features
+multiomics / regress / ALPELISIB / GDSC_broad / pls: 449 samples, 12988 features
+multiomics / regress / BUPARLISIB / GDSC_broad / svmRadial: 424 samples, 12742 features
+multiomics / regress / BUPARLISIB / GDSC_broad / glmnet: 424 samples, 12742 features
+multiomics / regress / BUPARLISIB / GDSC_broad / pls: 424 samples, 12742 features
+multiomics / regress / CETUXIMAB / GDSC_broad / svmRadial: 455 samples, 13062 features
+multiomics / regress / CETUXIMAB / GDSC_broad / glmnet: 455 samples, 13062 features
+multiomics / regress / CETUXIMAB / GDSC_broad / pls: 455 samples, 13062 features
+multiomics / regress / ERLOTINIB / GDSC_broad / svmRadial: 456 samples, 12779 features
+multiomics / regress / ERLOTINIB / GDSC_broad / glmnet: 456 samples, 12779 features
+multiomics / regress / ERLOTINIB / GDSC_broad / pls: 456 samples, 12779 features
+multiomics / regress / RIBOCICLIB / GDSC_broad / svmRadial: 36 samples, 13697 features
+multiomics / regress / RIBOCICLIB / GDSC_broad / glmnet: 36 samples, 13697 features
+multiomics / regress / RIBOCICLIB / GDSC_broad / pls: 36 samples, 13697 features
+multiomics / regress / TRAMETINIB / GDSC_broad / svmRadial: 494 samples, 12946 features
+multiomics / regress / TRAMETINIB / GDSC_broad / glmnet: 494 samples, 12946 features
+multiomics / regress / TRAMETINIB / GDSC_broad / pls: 494 samples, 12946 features
+multiomics / none / ALPELISIB / GDSC_sanger / svmRadial: 211 samples, 13372 features
+multiomics / none / ALPELISIB / GDSC_sanger / glmnet: 211 samples, 13372 features
+multiomics / none / ALPELISIB / GDSC_sanger / pls: 211 samples, 13372 features
+multiomics / none / BUPARLISIB / GDSC_sanger / svmRadial: 196 samples, 13564 features
+multiomics / none / BUPARLISIB / GDSC_sanger / glmnet: 196 samples, 13564 features
+multiomics / none / BUPARLISIB / GDSC_sanger / pls: 196 samples, 13564 features
+multiomics / none / CETUXIMAB / GDSC_sanger / svmRadial: 255 samples, 13128 features
+multiomics / none / CETUXIMAB / GDSC_sanger / glmnet: 255 samples, 13128 features
+multiomics / none / CETUXIMAB / GDSC_sanger / pls: 255 samples, 13128 features
+multiomics / none / ERLOTINIB / GDSC_sanger / svmRadial: 244 samples, 12942 features
+multiomics / none / ERLOTINIB / GDSC_sanger / glmnet: 244 samples, 12942 features
+multiomics / none / ERLOTINIB / GDSC_sanger / pls: 244 samples, 12942 features
+multiomics / none / TRAMETINIB / GDSC_sanger / svmRadial: 273 samples, 12954 features
+multiomics / none / TRAMETINIB / GDSC_sanger / glmnet: 273 samples, 12954 features
+multiomics / none / TRAMETINIB / GDSC_sanger / pls: 273 samples, 12954 features
+multiomics / regress / ALPELISIB / GDSC_sanger / svmRadial: 211 samples, 13372 features
+multiomics / regress / ALPELISIB / GDSC_sanger / glmnet: 211 samples, 13372 features
+multiomics / regress / ALPELISIB / GDSC_sanger / pls: 211 samples, 13372 features
+multiomics / regress / BUPARLISIB / GDSC_sanger / svmRadial: 196 samples, 13564 features
+multiomics / regress / BUPARLISIB / GDSC_sanger / glmnet: 196 samples, 13564 features
+multiomics / regress / BUPARLISIB / GDSC_sanger / pls: 196 samples, 13564 features
+multiomics / regress / CETUXIMAB / GDSC_sanger / svmRadial: 255 samples, 13128 features
+multiomics / regress / CETUXIMAB / GDSC_sanger / glmnet: 255 samples, 13128 features
+multiomics / regress / CETUXIMAB / GDSC_sanger / pls: 255 samples, 13128 features
+multiomics / regress / ERLOTINIB / GDSC_sanger / svmRadial: 244 samples, 12942 features
+multiomics / regress / ERLOTINIB / GDSC_sanger / glmnet: 244 samples, 12942 features
+multiomics / regress / ERLOTINIB / GDSC_sanger / pls: 244 samples, 12942 features
+multiomics / regress / TRAMETINIB / GDSC_sanger / svmRadial: 273 samples, 12954 features
+multiomics / regress / TRAMETINIB / GDSC_sanger / glmnet: 273 samples, 12954 features
+multiomics / regress / TRAMETINIB / GDSC_sanger / pls: 273 samples, 12954 features
+panel / none / ALPELISIB / CCLE / svmRadial: 779 samples, 1701 features
+panel / none / ALPELISIB / CCLE / glmnet: 779 samples, 1701 features
+panel / none / ALPELISIB / CCLE / pls: 779 samples, 1701 features
+panel / none / BUPARLISIB / CCLE / svmRadial: 730 samples, 1680 features
+panel / none / BUPARLISIB / CCLE / glmnet: 730 samples, 1680 features
+panel / none / BUPARLISIB / CCLE / pls: 730 samples, 1680 features
+panel / none / CETUXIMAB / CCLE / svmRadial: 849 samples, 1691 features
+panel / none / CETUXIMAB / CCLE / glmnet: 849 samples, 1691 features
+panel / none / CETUXIMAB / CCLE / pls: 849 samples, 1691 features
+panel / none / ERLOTINIB / CCLE / svmRadial: 833 samples, 1682 features
+panel / none / ERLOTINIB / CCLE / glmnet: 833 samples, 1682 features
+panel / none / ERLOTINIB / CCLE / pls: 833 samples, 1682 features
+panel / none / RIBOCICLIB / CCLE / svmRadial: 45 samples, 1464 features
+panel / none / RIBOCICLIB / CCLE / glmnet: 45 samples, 1464 features
+panel / none / RIBOCICLIB / CCLE / pls: 45 samples, 1464 features
+panel / none / TRAMETINIB / CCLE / svmRadial: 924 samples, 1684 features
+panel / none / TRAMETINIB / CCLE / glmnet: 924 samples, 1684 features
+panel / none / TRAMETINIB / CCLE / pls: 924 samples, 1684 features
+panel / regress / ALPELISIB / CCLE / svmRadial: 779 samples, 1701 features
+panel / regress / ALPELISIB / CCLE / glmnet: 779 samples, 1701 features
+panel / regress / ALPELISIB / CCLE / pls: 779 samples, 1701 features
+panel / regress / BUPARLISIB / CCLE / svmRadial: 730 samples, 1680 features
+panel / regress / BUPARLISIB / CCLE / glmnet: 730 samples, 1680 features
+panel / regress / BUPARLISIB / CCLE / pls: 730 samples, 1680 features
+panel / regress / CETUXIMAB / CCLE / svmRadial: 849 samples, 1691 features
+panel / regress / CETUXIMAB / CCLE / glmnet: 849 samples, 1691 features
+panel / regress / CETUXIMAB / CCLE / pls: 849 samples, 1691 features
+panel / regress / ERLOTINIB / CCLE / svmRadial: 833 samples, 1682 features
+panel / regress / ERLOTINIB / CCLE / glmnet: 833 samples, 1682 features
+panel / regress / ERLOTINIB / CCLE / pls: 833 samples, 1682 features
+panel / regress / RIBOCICLIB / CCLE / svmRadial: 45 samples, 1464 features
+panel / regress / RIBOCICLIB / CCLE / glmnet: 45 samples, 1464 features
+panel / regress / RIBOCICLIB / CCLE / pls: 45 samples, 1464 features
+panel / regress / TRAMETINIB / CCLE / svmRadial: 924 samples, 1684 features
+panel / regress / TRAMETINIB / CCLE / glmnet: 924 samples, 1684 features
+panel / regress / TRAMETINIB / CCLE / pls: 924 samples, 1684 features
+panel / none / ALPELISIB / GDSC_broad / svmRadial: 449 samples, 1678 features
+panel / none / ALPELISIB / GDSC_broad / glmnet: 449 samples, 1678 features
+panel / none / ALPELISIB / GDSC_broad / pls: 449 samples, 1678 features
+panel / none / BUPARLISIB / GDSC_broad / svmRadial: 424 samples, 1665 features
+panel / none / BUPARLISIB / GDSC_broad / glmnet: 424 samples, 1665 features
+panel / none / BUPARLISIB / GDSC_broad / pls: 424 samples, 1665 features
+panel / none / CETUXIMAB / GDSC_broad / svmRadial: 455 samples, 1683 features
+panel / none / CETUXIMAB / GDSC_broad / glmnet: 455 samples, 1683 features
+panel / none / CETUXIMAB / GDSC_broad / pls: 455 samples, 1683 features
+panel / none / ERLOTINIB / GDSC_broad / svmRadial: 456 samples, 1671 features
+panel / none / ERLOTINIB / GDSC_broad / glmnet: 456 samples, 1671 features
+panel / none / ERLOTINIB / GDSC_broad / pls: 456 samples, 1671 features
+panel / none / RIBOCICLIB / GDSC_broad / svmRadial: 36 samples, 1431 features
+panel / none / RIBOCICLIB / GDSC_broad / glmnet: 36 samples, 1431 features
+panel / none / RIBOCICLIB / GDSC_broad / pls: 36 samples, 1431 features
+panel / none / TRAMETINIB / GDSC_broad / svmRadial: 494 samples, 1691 features
+panel / none / TRAMETINIB / GDSC_broad / glmnet: 494 samples, 1691 features
+panel / none / TRAMETINIB / GDSC_broad / pls: 494 samples, 1691 features
+panel / regress / ALPELISIB / GDSC_broad / svmRadial: 449 samples, 1678 features
+panel / regress / ALPELISIB / GDSC_broad / glmnet: 449 samples, 1678 features
+panel / regress / ALPELISIB / GDSC_broad / pls: 449 samples, 1678 features
+panel / regress / BUPARLISIB / GDSC_broad / svmRadial: 424 samples, 1665 features
+panel / regress / BUPARLISIB / GDSC_broad / glmnet: 424 samples, 1665 features
+panel / regress / BUPARLISIB / GDSC_broad / pls: 424 samples, 1665 features
+panel / regress / CETUXIMAB / GDSC_broad / svmRadial: 455 samples, 1683 features
+panel / regress / CETUXIMAB / GDSC_broad / glmnet: 455 samples, 1683 features
+panel / regress / CETUXIMAB / GDSC_broad / pls: 455 samples, 1683 features
+panel / regress / ERLOTINIB / GDSC_broad / svmRadial: 456 samples, 1671 features
+panel / regress / ERLOTINIB / GDSC_broad / glmnet: 456 samples, 1671 features
+panel / regress / ERLOTINIB / GDSC_broad / pls: 456 samples, 1671 features
+panel / regress / RIBOCICLIB / GDSC_broad / svmRadial: 36 samples, 1431 features
+panel / regress / RIBOCICLIB / GDSC_broad / glmnet: 36 samples, 1431 features
+panel / regress / RIBOCICLIB / GDSC_broad / pls: 36 samples, 1431 features
+panel / regress / TRAMETINIB / GDSC_broad / svmRadial: 494 samples, 1691 features
+panel / regress / TRAMETINIB / GDSC_broad / glmnet: 494 samples, 1691 features
+panel / regress / TRAMETINIB / GDSC_broad / pls: 494 samples, 1691 features
+panel / none / ALPELISIB / GDSC_sanger / svmRadial: 211 samples, 1638 features
+panel / none / ALPELISIB / GDSC_sanger / glmnet: 211 samples, 1638 features
+panel / none / ALPELISIB / GDSC_sanger / pls: 211 samples, 1638 features
+panel / none / BUPARLISIB / GDSC_sanger / svmRadial: 196 samples, 1682 features
+panel / none / BUPARLISIB / GDSC_sanger / glmnet: 196 samples, 1682 features
+panel / none / BUPARLISIB / GDSC_sanger / pls: 196 samples, 1682 features
+panel / none / CETUXIMAB / GDSC_sanger / svmRadial: 255 samples, 1663 features
+panel / none / CETUXIMAB / GDSC_sanger / glmnet: 255 samples, 1663 features
+panel / none / CETUXIMAB / GDSC_sanger / pls: 255 samples, 1663 features
+panel / none / ERLOTINIB / GDSC_sanger / svmRadial: 244 samples, 1653 features
+panel / none / ERLOTINIB / GDSC_sanger / glmnet: 244 samples, 1653 features
+panel / none / ERLOTINIB / GDSC_sanger / pls: 244 samples, 1653 features
+panel / none / TRAMETINIB / GDSC_sanger / svmRadial: 273 samples, 1669 features
+panel / none / TRAMETINIB / GDSC_sanger / glmnet: 273 samples, 1669 features
+panel / none / TRAMETINIB / GDSC_sanger / pls: 273 samples, 1669 features
+panel / regress / ALPELISIB / GDSC_sanger / svmRadial: 211 samples, 1638 features
+panel / regress / ALPELISIB / GDSC_sanger / glmnet: 211 samples, 1638 features
+panel / regress / ALPELISIB / GDSC_sanger / pls: 211 samples, 1638 features
+panel / regress / BUPARLISIB / GDSC_sanger / svmRadial: 196 samples, 1682 features
+panel / regress / BUPARLISIB / GDSC_sanger / glmnet: 196 samples, 1682 features
+panel / regress / BUPARLISIB / GDSC_sanger / pls: 196 samples, 1682 features
+panel / regress / CETUXIMAB / GDSC_sanger / svmRadial: 255 samples, 1663 features
+panel / regress / CETUXIMAB / GDSC_sanger / glmnet: 255 samples, 1663 features
+panel / regress / CETUXIMAB / GDSC_sanger / pls: 255 samples, 1663 features
+panel / regress / ERLOTINIB / GDSC_sanger / svmRadial: 244 samples, 1653 features
+panel / regress / ERLOTINIB / GDSC_sanger / glmnet: 244 samples, 1653 features
+panel / regress / ERLOTINIB / GDSC_sanger / pls: 244 samples, 1653 features
+panel / regress / TRAMETINIB / GDSC_sanger / svmRadial: 273 samples, 1669 features
+panel / regress / TRAMETINIB / GDSC_sanger / glmnet: 273 samples, 1669 features
+panel / regress / TRAMETINIB / GDSC_sanger / pls: 273 samples, 1669 features
+There were 32 warnings (use warnings() to see them)
+
+    feature_set correction       drug     dataset    method     n    r2
+         <char>     <char>     <char>      <char>    <char> <int> <num>
+ 1:  multiomics       none  ALPELISIB        CCLE    glmnet   584 0.200
+ 2:  multiomics       none BUPARLISIB        CCLE svmRadial   552 0.109
+ 3:  multiomics       none  CETUXIMAB        CCLE       pls   604 0.085
+ 4:  multiomics       none  ERLOTINIB        CCLE    glmnet   604 0.150
+ 5:  multiomics       none RIBOCICLIB        CCLE       pls    42 0.315
+ 6:  multiomics       none TRAMETINIB        CCLE svmRadial   659 0.384
+ 7:  multiomics    regress  ALPELISIB        CCLE    glmnet   584 0.200
+ 8:  multiomics    regress BUPARLISIB        CCLE svmRadial   552 0.109
+ 9:  multiomics    regress  CETUXIMAB        CCLE       pls   604 0.085
+10:  multiomics    regress  ERLOTINIB        CCLE    glmnet   604 0.150
+11:  multiomics    regress RIBOCICLIB        CCLE       pls    42 0.315
+12:  multiomics    regress TRAMETINIB        CCLE svmRadial   659 0.384
+13:  multiomics       none  ALPELISIB  GDSC_broad    glmnet   449 0.209
+14:  multiomics       none BUPARLISIB  GDSC_broad    glmnet   424 0.106
+15:  multiomics       none  CETUXIMAB  GDSC_broad svmRadial   455 0.133
+16:  multiomics       none  ERLOTINIB  GDSC_broad svmRadial   456 0.165
+17:  multiomics       none RIBOCICLIB  GDSC_broad       pls    36 0.173
+18:  multiomics       none TRAMETINIB  GDSC_broad    glmnet   494 0.459
+19:  multiomics    regress  ALPELISIB  GDSC_broad    glmnet   449 0.209
+20:  multiomics    regress BUPARLISIB  GDSC_broad    glmnet   424 0.106
+21:  multiomics    regress  CETUXIMAB  GDSC_broad svmRadial   455 0.133
+22:  multiomics    regress  ERLOTINIB  GDSC_broad svmRadial   456 0.165
+23:  multiomics    regress RIBOCICLIB  GDSC_broad       pls    36 0.173
+24:  multiomics    regress TRAMETINIB  GDSC_broad    glmnet   494 0.459
+25:  multiomics       none  ALPELISIB GDSC_sanger svmRadial   211 0.132
+26:  multiomics       none BUPARLISIB GDSC_sanger svmRadial   196 0.137
+27:  multiomics       none  CETUXIMAB GDSC_sanger svmRadial   255 0.092
+28:  multiomics       none  ERLOTINIB GDSC_sanger svmRadial   244 0.290
+29:  multiomics       none TRAMETINIB GDSC_sanger    glmnet   273 0.510
+30:  multiomics    regress  ALPELISIB GDSC_sanger svmRadial   211 0.132
+31:  multiomics    regress BUPARLISIB GDSC_sanger svmRadial   196 0.137
+32:  multiomics    regress  CETUXIMAB GDSC_sanger svmRadial   255 0.092
+33:  multiomics    regress  ERLOTINIB GDSC_sanger svmRadial   244 0.290
+34:  multiomics    regress TRAMETINIB GDSC_sanger    glmnet   273 0.510
+35:       panel       none  ALPELISIB        CCLE    glmnet   779 0.108
+36:       panel       none BUPARLISIB        CCLE    glmnet   730 0.065
+37:       panel       none  CETUXIMAB        CCLE svmRadial   849 0.035
+38:       panel       none  ERLOTINIB        CCLE       pls   833 0.075
+39:       panel       none RIBOCICLIB        CCLE       pls    45 0.250
+40:       panel       none TRAMETINIB        CCLE    glmnet   924 0.170
+41:       panel    regress  ALPELISIB        CCLE    glmnet   779 0.108
+42:       panel    regress BUPARLISIB        CCLE    glmnet   730 0.065
+43:       panel    regress  CETUXIMAB        CCLE svmRadial   849 0.035
+44:       panel    regress  ERLOTINIB        CCLE       pls   833 0.075
+45:       panel    regress RIBOCICLIB        CCLE       pls    45 0.250
+46:       panel    regress TRAMETINIB        CCLE    glmnet   924 0.170
+47:       panel       none  ALPELISIB  GDSC_broad    glmnet   449 0.083
+48:       panel       none BUPARLISIB  GDSC_broad svmRadial   424 0.020
+49:       panel       none  CETUXIMAB  GDSC_broad svmRadial   455 0.055
+50:       panel       none  ERLOTINIB  GDSC_broad svmRadial   456 0.048
+51:       panel       none RIBOCICLIB  GDSC_broad       pls    36 0.139
+52:       panel       none TRAMETINIB  GDSC_broad    glmnet   494 0.179
+53:       panel    regress  ALPELISIB  GDSC_broad    glmnet   449 0.083
+54:       panel    regress BUPARLISIB  GDSC_broad svmRadial   424 0.020
+55:       panel    regress  CETUXIMAB  GDSC_broad svmRadial   455 0.055
+56:       panel    regress  ERLOTINIB  GDSC_broad svmRadial   456 0.048
+57:       panel    regress RIBOCICLIB  GDSC_broad       pls    36 0.139
+58:       panel    regress TRAMETINIB  GDSC_broad    glmnet   494 0.179
+59:       panel       none  ALPELISIB GDSC_sanger    glmnet   211 0.053
+60:       panel       none BUPARLISIB GDSC_sanger svmRadial   196 0.069
+61:       panel       none  CETUXIMAB GDSC_sanger    glmnet   255 0.023
+62:       panel       none  ERLOTINIB GDSC_sanger       pls   244 0.145
+63:       panel       none TRAMETINIB GDSC_sanger    glmnet   273 0.262
+64:       panel    regress  ALPELISIB GDSC_sanger    glmnet   211 0.053
+65:       panel    regress BUPARLISIB GDSC_sanger svmRadial   196 0.069
+66:       panel    regress  CETUXIMAB GDSC_sanger    glmnet   255 0.023
+67:       panel    regress  ERLOTINIB GDSC_sanger       pls   244 0.145
+68:       panel    regress TRAMETINIB GDSC_sanger    glmnet   273 0.262
+    feature_set correction       drug     dataset    method     n    r2
+         <char>     <char>     <char>      <char>    <char> <int> <num>
+

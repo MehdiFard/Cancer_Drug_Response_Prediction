@@ -1,0 +1,14 @@
+Warning message:
+package ‘data.table’ was built under R version 4.5.3 
+Warning: stack imbalance in 'lapply', 7 then 9
+Warning: stack imbalance in 'for', 2 then 4
+
+    correction same_dataset_neighbours_cell_lines same_dataset_neighbours_pdx
+        <char>                              <num>                       <num>
+1: uncorrected                          0.8494228                   0.9863409
+2:   corrected                          0.5539442                   0.6908521
+   if_fully_mixed
+            <num>
+1:      0.3520719
+2:      0.3520719
+

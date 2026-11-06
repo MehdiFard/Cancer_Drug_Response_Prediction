@@ -1,0 +1,51 @@
+Warning message:
+package ‘data.table’ was built under R version 4.5.3 
+Preparing CCLE ...
+Preparing GDSC_broad ...
+Preparing GDSC_sanger ...
+Preparing PDX_all ...
+
+== Samples, and genes per omic (genes = expression) ==
+         CCLE GDSC_broad GDSC_sanger PDX_all
+samples  1291        507         281     399
+genes   18355      18355       18355   18355
+cnv     18355      18355       18355   18355
+mut     18355      18355       18355   18355
+
+== Expression values, log2(x + 1): min, median, 99th percentile, max ==
+      CCLE GDSC_broad GDSC_sanger PDX_all
+0%    0.00       0.00        0.00    0.00
+50%   1.90       1.14        1.25    1.68
+99%   8.99       7.07        6.97    8.39
+100% 16.23      14.29       13.73   18.31
+
+== Median number of mutated genes per sample (non-silent) ==
+       CCLE  GDSC_broad GDSC_sanger     PDX_all 
+        235         400         387         147 
+
+== Samples with a drug response, per drug ==
+Key: <drug>
+         drug  CCLE GDSC_broad GDSC_sanger PDX_all
+       <char> <int>      <int>       <int>   <int>
+1:  ALPELISIB   584        449         211     141
+2: BUPARLISIB   552        424         196     170
+3:  CETUXIMAB   604        455         255      66
+4:  ERLOTINIB   604        456         244      25
+5: RIBOCICLIB    42         36           3     172
+6: TRAMETINIB   659        494         273      37
+
+== Gene panel: samples, CNV genes, mutated genes per sample (median) ==
+        CCLE GDSC_broad GDSC_sanger PDX_all
+samples 1722        507         281     399
+genes    882        882         882     882
+mutated   18         31          29      14
+
+== PDX mRECIST classes per drug (Xeva) ==
+            mRECIST
+drug          CR  PD  PR  SD <NA>
+  ALPELISIB    1  48   6  82    4
+  BUPARLISIB   1  53  10 100    6
+  CETUXIMAB    2  38   3  19    4
+  ERLOTINIB    0   8   3   9    5
+  RIBOCICLIB   3  71   9  81    8
+  TRAMETINIB   1   9   5  21    0

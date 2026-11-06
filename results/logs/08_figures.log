@@ -1,0 +1,23 @@
+Warning message:
+package ‘data.table’ was built under R version 4.5.3 
+Warning message:
+package ‘ggplot2’ was built under R version 4.5.3 
+systemfonts and textshaping have been compiled with different versions of Freetype. Because of this, textshaping will not use the font cache provided by systemfontsKey: <feature_set, correction>
+   feature_set  correction mean_cv_r2 mean_cross_dataset_r2 pdx_r2_ensemble
+        <char>      <char>      <num>                 <num>           <num>
+1:  multiomics   corrected  0.2146245             0.2678205       -8.981132
+2:  multiomics uncorrected  0.2146244             0.2497734       -8.796571
+3:       panel   corrected  0.1047370             0.1414113       -9.262477
+4:       panel uncorrected  0.1047367             0.1363173       -9.371697
+   pdx_r2_single pdx_pearson_ensemble pdx_pearson_single pdx_spearman_ensemble
+           <num>                <num>              <num>                 <num>
+1:     -8.827306           0.18259183         0.10209164            0.17102452
+2:     -8.733742           0.17532620         0.09347499            0.15818621
+3:     -9.174886           0.05466804         0.02546956            0.04746118
+4:     -9.268917           0.03655469         0.01445989            0.02507719
+   pdx_spearman_single pdx_roc_auc_pd_ensemble pdx_roc_auc_pd_single
+                 <num>                   <num>                 <num>
+1:          0.07928277               0.6166500             0.5603171
+2:          0.07326363               0.6165753             0.5591032
+3:          0.06375516               0.5327286             0.5080890
+4:          0.04856521               0.5162565             0.4976723

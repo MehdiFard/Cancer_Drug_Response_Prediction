@@ -19,3 +19,5 @@ models/*
 .vscode/
 
 temp/
+# Snakemake
+.snakemake/

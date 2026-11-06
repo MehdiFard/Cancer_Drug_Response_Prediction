@@ -1,0 +1,3 @@
+correction,same_dataset_neighbours_cell_lines,same_dataset_neighbours_pdx,if_fully_mixed
+uncorrected,0.849422799422801,0.986340852130326,0.352071921366459
+corrected,0.553944203944204,0.690852130325815,0.352071921366459

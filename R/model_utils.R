@@ -6,11 +6,10 @@ get_response <- function(data, drug_name) {
   resp[order(resp$sample_id), c("sample_id", "value")]
 }
 
-# Keep only some samples in every omic
+# Keep only some samples in every omic (the panel data has no gex)
 subset_samples <- function(data, ids) {
-  list(gex = data$gex[ids, , drop = FALSE],
-       cnv = data$cnv[ids, , drop = FALSE],
-       mut = data$mut[ids, , drop = FALSE])
+  omics <- intersect(c("gex", "cnv", "mut"), names(data))
+  lapply(setNames(omics, omics), function(o) data[[o]][ids, , drop = FALSE])
 }
 
 # Regression metrics. R-squared here is 1 - SSE/SST (how close the values are),
@@ -27,6 +26,16 @@ reg_metrics <- function(obs, pred) {
     spearman = if (same) NA_real_ else cor(obs, pred, method = "spearman"),
     rmse     = sqrt(mean((obs - pred)^2))
   )
+}
+
+# ROC AUC via Mann-Whitney: probability that a positive sample scores higher than a negative one.
+# 0.5 = no better than chance, 1 = perfect separation.
+roc_auc <- function(score, positive) {
+  ok <- !is.na(score) & !is.na(positive)
+  score <- score[ok]; positive <- positive[ok]
+  n1 <- sum(positive); n0 <- sum(!positive)
+  if (n1 == 0 || n0 == 0) return(NA_real_)
+  (sum(rank(score)[positive]) - n1 * (n1 + 1) / 2) / (n1 * n0)
 }
 
 # caret's built-in xgboost models break with xgboost 3.x, so this is a small
@@ -103,6 +112,14 @@ predict_saved <- function(model, data, ids) {
   as.numeric(predict(model$fit, newdata = x))
 }
 
-model_path <- function(drug, dataset, method) {
-  file.path("models", "task1", paste0(drug, "_", dataset, "_", method, ".rds"))
+# One folder per feature set and correction, e.g. models/multiomics_uncorrected/
+model_path <- function(drug, dataset, method, feature_set, correction) {
+  file.path("models", paste0(feature_set, "_", correction), paste0(drug, "_", dataset, "_", method, ".rds"))
+}
+
+# Processed data of one dataset for one feature set ("multiomics" or "panel"), batch
+# "uncorrected" (from 01, <dataset>_clean_<feature set>.rds) or "corrected" (from 02)
+load_data <- function(dataset, feature_set, correction = "uncorrected") {
+  stage <- c(uncorrected = "clean", corrected = "corrected")[[correction]]
+  readRDS(file.path("data/processed", paste0(dataset, "_", stage, "_", feature_set, ".rds")))
 }

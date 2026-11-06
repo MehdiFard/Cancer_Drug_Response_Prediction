@@ -1,0 +1,36 @@
+Warning message:
+package ‘data.table’ was built under R version 4.5.3 
+          drug  rank    gene   omic mean_weight n_datasets
+        <char> <int>  <char> <char>       <num>      <int>
+ 1:  ALPELISIB     1  PIK3CA    mut    -0.00750          2
+ 2:  ALPELISIB     2   AMPD1    gex    -0.00290          1
+ 3:  ALPELISIB     3  LIN28A    gex    -0.00230          1
+ 4:  ALPELISIB     4      MB    gex    -0.00200          2
+ 5:  ALPELISIB     5 ZFP36L2    gex    -0.00150          2
+ 6: BUPARLISIB     1  SLC2A1    gex     0.00420          2
+ 7: BUPARLISIB     2   TEX19    gex    -0.00370          2
+ 8: BUPARLISIB     3   TRNP1    gex     0.00330          2
+ 9: BUPARLISIB     4  BCL2L1    gex     0.00270          3
+10: BUPARLISIB     5    NAV2    gex     0.00160          2
+11:  CETUXIMAB     1  IGFBP1    gex    -0.00500          2
+12:  CETUXIMAB     2  FAM25A    gex    -0.00180          1
+13:  CETUXIMAB     3    CASR    mut    -0.00180          1
+14:  CETUXIMAB     4   MFAP5    gex    -0.00140          2
+15:  CETUXIMAB     5    FGL1    gex    -0.00110          2
+16:  ERLOTINIB     1   MMP13    gex    -0.00350          1
+17:  ERLOTINIB     2     BTC    gex    -0.00270          2
+18:  ERLOTINIB     3 CYP4F11    gex    -0.00260          1
+19:  ERLOTINIB     4    EGFR    gex    -0.00250          2
+20:  ERLOTINIB     5   HOXA1    gex    -0.00230          2
+21: RIBOCICLIB     1 SLC44A3    gex     0.00120          2
+22: RIBOCICLIB     2 CCDC136    mut    -0.00110          2
+23: RIBOCICLIB     3  FRMPD2    mut    -0.00083          1
+24: RIBOCICLIB     4   ZNF22    mut    -0.00079          2
+25: RIBOCICLIB     5    PVT1    gex    -0.00064          1
+26: TRAMETINIB     1     LYZ    gex    -0.00980          2
+27: TRAMETINIB     2   SPRY2    gex    -0.00820          3
+28: TRAMETINIB     3   BIRC7    gex    -0.00710          2
+29: TRAMETINIB     4   PEAR1    gex    -0.00700          1
+30: TRAMETINIB     5    IL24    gex    -0.00640          2
+          drug  rank    gene   omic mean_weight n_datasets
+        <char> <int>  <char> <char>       <num>      <int>
