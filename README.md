@@ -198,37 +198,25 @@ a weight per feature that can be read directly.
 
 ## Pipeline
 
-Each box is a rule in the `Snakefile` and runs one script in `scripts/`.
+Each box is a rule in the `Snakefile` and runs one script in `scripts/`. Arrows show the run
+order; links already implied by another path (e.g. 01 → 04) are left out.
 
 ```mermaid
+%%{init: {"flowchart": {"nodeSpacing": 15, "rankSpacing": 22}, "themeVariables": {"fontSize": "12px"}}}%%
 flowchart TB
-    prepare_data["01 · prepare_data<br/>clean the course data, read Xeva"]
+    prepare_data["01 · prepare_data<br/>clean data, read Xeva"]
     batch_correction["02 · batch_correction<br/>regressBatches, PCA"]
-    model_comparison["03 · model_comparison<br/>6 model types, keep the best 3"]
-    train_models["04 · train_models<br/>best model per drug × dataset × feature set"]
-    cross_dataset["05 · cross_dataset<br/>predict the other cell line datasets"]
-    predict_pdx["06 · predict_pdx<br/>predict PDX, ROC AUC"]
-    pdx_cancer_type["06b · pdx_cancer_type<br/>PDX results by cancer type"]
+    model_comparison["03 · model_comparison<br/>6 model types on uncorrected data"]
+    train_models["04 · train_models<br/>best model per drug × dataset"]
+    cross_dataset["05 · cross_dataset<br/>other cell line datasets"]
+    predict_pdx["06 · predict_pdx<br/>PDX predictions"]
+    pdx_cancer_type["06b · pdx_cancer_type<br/>PDX by cancer type"]
     top_features["07 · top_features<br/>elastic net weights"]
     figures["08 · figures<br/>figures, summary.csv"]
-    prepare_data --> batch_correction
-    prepare_data --> model_comparison
-    prepare_data --> train_models
-    batch_correction --> train_models
-    model_comparison --> train_models
-    train_models --> cross_dataset
-    prepare_data --> predict_pdx
-    train_models --> predict_pdx
-    cross_dataset --> predict_pdx
-    predict_pdx --> pdx_cancer_type
-    batch_correction --> top_features
-    train_models --> top_features
-    batch_correction --> figures
-    model_comparison --> figures
-    train_models --> figures
-    cross_dataset --> figures
-    predict_pdx --> figures
-    pdx_cancer_type --> figures
+    prepare_data --> batch_correction & model_comparison
+    batch_correction & model_comparison --> train_models
+    train_models --> cross_dataset & top_features
+    cross_dataset --> predict_pdx --> pdx_cancer_type --> figures
     top_features --> figures
 ```
 
