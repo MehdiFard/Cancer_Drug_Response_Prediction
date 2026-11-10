@@ -1,0 +1,32 @@
+# Conda environment for the pipeline (Linux):
+#   conda env create -f environment.yaml        (or mamba)
+#   conda activate drug_response
+# On Apple Silicon Macs bioconda has no batchelor build: remove the bioconductor-* lines and
+# install those packages from within R with BiocManager::install() (needs r-biocmanager).
+name: drug_response
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - r-base=4.5
+  - snakemake-minimal>=8
+  # data and models
+  - r-data.table
+  - r-caret
+  - r-glmnet
+  - r-kernlab
+  - r-pls
+  - r-ranger
+  - r-xgboost
+  - r-doparallel
+  # figures
+  - r-ggplot2
+  - r-patchwork
+  - r-ragg
+  - r-scales
+  # Bioconductor
+  - bioconductor-batchelor
+  - bioconductor-biocneighbors
+  - bioconductor-summarizedexperiment
+  - bioconductor-annotationdbi
+  - bioconductor-org.hs.eg.db

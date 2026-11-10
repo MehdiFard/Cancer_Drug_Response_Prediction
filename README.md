@@ -241,18 +241,32 @@ Details:
 
 ## How to run
 
-Needs R 4.5 and Snakemake (≥ 8), with these R packages:
-- **CRAN:** data.table, caret, glmnet, kernlab, pls, ranger, xgboost, doParallel, ggplot2,
-  patchwork, ragg.
-- **Bioconductor:** batchelor, BiocNeighbors, SummarizedExperiment, AnnotationDbi, org.Hs.eg.db.
+**1. Software.** All software (R 4.5, Snakemake and the R packages) is listed in
+[`environment.yaml`](environment.yaml). Create the conda environment from it once, then activate
+it in every new terminal:
+```
+conda env create -f environment.yaml      # creates the environment "drug_response" (or: mamba env create ...)
+conda activate drug_response
+```
+The file is made for Linux. On an Apple Silicon Mac, bioconda has no `batchelor` build: remove the
+`bioconductor-*` lines from `environment.yaml`, add `r-biocmanager`, create and activate the
+environment, then install those packages from within R:
+```
+Rscript -e 'BiocManager::install(c("batchelor", "BiocNeighbors", "SummarizedExperiment", "AnnotationDbi", "org.Hs.eg.db"))'
+```
 
-1. Put the course data in `data/raw/` (`CCLE/`, `GDSC_broad/`, `GDSC_sanger/`, `PDX_all/`) and
-   `Xeva_PDXE_tsv.tar.gz` in `data/raw/xeva/`.
-2. From the project root, with R and Snakemake on the PATH:
-   ```
-   snakemake -n            # show what would run
-   snakemake --cores <n_core>    # run everything that is missing or out of date
-   ```
+**2. Data.** Put the course data in `data/raw/` (`CCLE/`, `GDSC_broad/`, `GDSC_sanger/`,
+`PDX_all/`) and `Xeva_PDXE_tsv.tar.gz` in `data/raw/xeva/`.
+
+**3. Run.** From the project root, with the environment activated:
+```
+snakemake -n                  # show what would run
+snakemake --cores <n_core>    # run everything that is missing or out of date
+```
+Or without activating it:
+```
+conda run -n drug_response snakemake --cores <n_core>
+```
 
 ## Limitations
 - Cell line AUC and PDX tumour response measure different things, so PDX results are judged on
