@@ -120,6 +120,20 @@ rule predict_pdx:
         "Rscript {input[0]} > {log} 2>&1"
 
 
+rule pdx_cancer_type:
+    input:
+        "scripts/06b_pdx_cancer_type.R",
+        "data/raw/xeva/Xeva_PDXE_tsv.tar.gz",
+        f"{TABLES}/pdx_predictions.csv",
+    output:
+        f"{TABLES}/pdx_cancer_type_counts.csv",
+        f"{TABLES}/pdx_cancer_type_stats.csv",
+    log:
+        "results/logs/06b_pdx_cancer_type.log",
+    shell:
+        "Rscript {input[0]} > {log} 2>&1"
+
+
 rule top_features:
     input:
         "scripts/07_top_features.R",
@@ -138,13 +152,14 @@ rule figures:
     input:
         "scripts/08_figures.R",
         f"{TABLES}/batch_effect_pca.csv",
-        f"{TABLES}/batch_effect_mixing.csv",
         f"{TABLES}/model_comparison_cv.csv",
         f"{TABLES}/model_comparison_summary.csv",
         f"{TABLES}/cv_metrics.csv",
         f"{TABLES}/cross_dataset_metrics.csv",
         f"{TABLES}/pdx_metrics.csv",
         f"{TABLES}/pdx_predictions.csv",
+        f"{TABLES}/pdx_cancer_type_counts.csv",
+        f"{TABLES}/pdx_cancer_type_stats.csv",
         f"{TABLES}/top_features.csv",
     output:
         expand("results/figures/{fig}.png", fig=FIGURES),

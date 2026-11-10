@@ -2,19 +2,57 @@
 
 Can drug response measured in cancer cell lines predict how real tumours respond?
 This project trains machine-learning models on three cell line drug screens and tests them on
-patient-derived xenografts (PDX: human tumours grown in mice), for six targeted cancer drugs:
-
-- **CCLE**: Cancer Cell Line Encyclopedia (Broad Institute);
-- **GDSC-Broad** and **GDSC-Sanger**: Genomics of Drug Sensitivity in Cancer, cell lines profiled
-  at the Broad and at the Sanger Institute;
-- **PDX**: Novartis PDX Encyclopedia, used only for testing.
+patient-derived xenografts (PDX: human tumours grown in mice), for six targeted cancer drugs.
 
 The datasets differ systematically (batch effect), so they are batch-corrected first. Two feature
-sets are compared: full multi-omics (expression, copy number, mutations of ~18,000 genes) and a
+sets are compared: full multi-omics (expression, copy number, and mutations of ~18,000 genes) and a
 clinical-style **gene panel** (copy number and mutations of 882 cancer genes, no expression).
 
 PDX is used only as a test set: no model, setting or ensemble is trained or chosen on it. The
-whole analysis is a Snakemake pipeline (see How to run).
+whole analysis is a Snakemake pipeline (see Pipeline and How to run).
+
+This is the capstone project of the computational genomics workshop *A Hands-on Course on Machine
+Learning for Genomics*, held by the Berlin Institute for Medical Systems Biology, Max Delbrück
+Center, Berlin, Germany, in 2021.
+
+## Data
+
+The course data can be downloaded as one
+[archive](https://bimsbstatic.mdc-berlin.de/akalin/AAkalin_DrugResponse/prepared/AAkalin_DrugResponse-prepared.tar.gz).
+Everything is in `data/raw/` (not in git).
+
+| Dataset (folder in `data/raw/`) | What it is | Samples (multi-omics) | Used for |
+|---|---|---|---|
+| **CCLE** (`CCLE/`) | Cancer Cell Line Encyclopedia: a large panel of cancer cell lines, molecularly profiled and drug-screened at the Broad Institute | 1,291 (1,722 with panel data) | training / testing |
+| **GDSC-Broad** (`GDSC_broad/`) | Genomics of Drug Sensitivity in Cancer (Sanger Institute) drug screens, for the cell lines whose omics come from the Broad Institute. The cell lines are all in CCLE too, with separately processed omics and nearly the same drug responses (r = 0.96–1.00 for five drugs) | 507 | training / testing |
+| **GDSC-Sanger** (`GDSC_sanger/`) | GDSC drug screens for the cell lines profiled at the Sanger Institute; no overlap with GDSC-Broad, 54 cell lines also in CCLE | 281 | training / testing |
+| **PDX** (`PDX_all/`) | Patient-derived xenografts from the Novartis PDX Encyclopedia (Gao et al., *Nat Med* 2015): pieces of patient tumours grown and treated in mice. Each **PDX sample** is the tumour of one patient, grown in mice (Xeva calls it a "model"); each drug was tested on one mouse per sample. Closer to real tumours than cell lines grown in culture | 399 PDX samples | **testing only** |
+| **Xeva** (`xeva/`) | `Xeva_PDXE_tsv.tar.gz`: the same PDX data curated with the Bioconductor package [Xeva](https://bioconductor.org/packages/Xeva/) (ORCESTRA, [Zenodo record 19354439](https://zenodo.org/records/19354439)), with tumour volume curves, response classes and the cancer type of each sample | same 399 PDX samples | PDX response classes and cancer types (Figure 3) |
+| Gene lists (`auxiliary/`) | `all_intersect_genes.tsv` (18,355 genes shared by all datasets), `oncoKB_intersect_genes.tsv` (the 882 panel genes), `oncoKB_gene_list.tsv` (all 1,064 OncoKB genes with IDs) | – | not used: the omics files are already limited to these genes |
+
+Each dataset folder has `all_intersect_genes/` (expression, copy number and mutations of the
+~18,000 shared genes), `oncoKB_intersect_genes/` (copy number and mutations of the 882 OncoKB
+cancer genes: the gene panel) and `drug_response/`.
+
+Drugs: Alpelisib, Buparlisib (PI3K), Cetuximab, Erlotinib (EGFR), Ribociclib (CDK4/6), Trametinib (MEK).
+
+**Response measures.**
+- **Cell lines: AUC**, the area under the dose-response curve; lower = more sensitive. The models predict this value.
+- **PDX: change in tumour volume** under the drug. It is on a different scale from the cell line AUC, so PDX predictions are judged by ranking only.
+- **PDX: mRECIST class**, taken from Xeva, which assigns it from each tumour's volume curve: CR /
+  PR (tumour shrank), SD (stable) or **PD (progressive disease: the tumour kept growing)**.
+  Shrinking tumours are rare (3–12 per drug), so the tumours are split into PD vs not PD.
+
+**Xeva.** `Xeva_PDXE_tsv.tar.gz` holds Xeva's tables as TSV files. `01_prepare_data.R` extracts two
+of them to a temporary folder (the archive itself is left as is): `model.tsv` (PDX sample → patient,
+drug and cancer type) and `sensitivity_model.tsv` (response per PDX sample).
+`06b_pdx_cancer_type.R` reads the cancer types from `model.tsv` the same way. It saves the mRECIST class, best response, best
+average response, slope and AUC of the growth curve (`data/processed/PDX_xeva_response.rds`).
+They show that the course PDX value is Xeva's best % change in tumour volume, rescaled (Spearman
+0.93–0.99), and they give the mRECIST classes. Xeva also has its own PDX omics, including
+continuous copy numbers. The course PDX copy numbers are almost all neutral (~1% gains or losses,
+vs 40–55% in cell lines). Rebuilding them from Xeva did not improve PDX prediction, so the models
+use only the course omics.
 
 ## Main results
 
@@ -23,24 +61,35 @@ whole analysis is a Snakemake pipeline (see How to run).
 | Cross-validation R², mean of best models | **0.21** | 0.10 |
 | R² on another cell line dataset, mean | **0.27** | 0.14 |
 | PDX: Spearman with response (ensemble, mean over drugs) | **0.17** | 0.05 |
-| PDX: ROC AUC, tumour kept growing vs not (ensemble, mean) | **0.62** | 0.53 |
+| PDX: ROC AUC, PD vs not PD (ensemble, mean over drugs) | **0.62** | 0.53 |
+
+**ROC AUC** (area under the receiver operating characteristic curve) is computed here
+(`06_predict_pdx.R`) from our predictions and the Xeva classes. It measures how well the predicted
+AUC separates PD tumours from the rest: the probability that a randomly picked PD tumour gets a higher predicted AUC (more resistant) than a
+randomly picked tumour that is not PD. 0.5 is chance, 1 is perfect.
 
 1. **Batch correction removes most of the dataset differences** between the cell line datasets
-   (Figure 1a–c). The results hardly depend on it:
+   (Figure 1a, b). The results hardly depend on it (`summary.csv`):
    - Without correction, cross-validation is identical.
    - Transfer between cell line datasets is slightly lower (R² 0.25 vs 0.27).
    - PDX results are unchanged.
-
-   `results/tables/summary.csv` has both.
 2. **Response is partly predictable within a dataset.** Cross-validated R² ranges from ~0.1
    (Buparlisib, Cetuximab) to ~0.5 (Trametinib). SVM, elastic net and PLS did best of six model
-   types (Figure 1d–g).
-3. **Expression matters.** The gene panel halves performance everywhere and is near chance on PDX
-   (Figures 1f–g, 2, 3).
+   types (Figure 1c–f).
+3. **Expression matters.** Without expression (the gene panel), every measure drops:
+   - cross-validated R² from 0.21 to 0.10 (Figure 1e vs f);
+   - R² on another cell line dataset from 0.27 to 0.14 (Figure 2);
+   - PDX ROC AUC from 0.62 to 0.53, close to chance (Figure 3b).
 4. **On PDX, the models carry signal for some drugs only.** Tumours that kept growing under
    Erlotinib or Trametinib get clearly higher predicted resistance (ROC AUC 0.86 and 0.79).
    Buparlisib, Cetuximab and Ribociclib are at chance. Erlotinib (25 PDX) and Trametinib (37)
-   have few samples, so these numbers are uncertain (Figure 3).
+   have few samples, so these numbers are uncertain (Figure 3a–c).
+   - Both were tested on one cancer type only (Erlotinib: all lung, Trametinib: pancreatic), so
+     the models rank tumours *within* a cancer type rather than telling cancer types apart
+     (Figure 3d).
+   - For Buparlisib and Ribociclib, cancer type explains much of the predictions (34% and 53% of
+     the variance) but almost none of the PDX response (8% and 0.1%). The models carry
+     cancer type differences from the cell lines that don't hold in PDX (Figure 3e, f).
 5. **The models pick up known biology** (Figure 4):
    - *PIK3CA* mutation predicts sensitivity to the PI3Kα inhibitor Alpelisib.
    - *EGFR* expression and its ligand *BTC* predict sensitivity to Erlotinib.
@@ -52,9 +101,8 @@ whole analysis is a Snakemake pipeline (see How to run).
 
 ## Figures
 
-All figures are drawn by `scripts/08_figures.R` from the tables in `results/tables/`. All
-results are from batch-corrected data. The exception is the model comparison (Figure 1d, e),
-which gives the same result either way. Figure 1a and c also show the uncorrected data.
+All results are from batch-corrected data. The exception is the model comparison (Figure 1c, d),
+which gives the same result either way. Figure 1a also shows the uncorrected data.
 
 ![Figure 1](results/figures/fig1_data_and_cv.png)
 
@@ -67,12 +115,8 @@ which gives the same result either way. Figure 1a and c also show the uncorrecte
     CCLE.
   - (**b**) After batch correction (`batchelor::regressBatches`, which removes each dataset's own
     mean per gene) the cell line datasets overlap. PDX stays partly apart, which is expected
-    biologically: they are tumours grown in mice, while the others are cells grown in plastic.
-- (**c**) Mixing: the share of each sample's 20 nearest neighbours (in the first 10 PCs) that
-  come from its own dataset. Grey: uncorrected; black: batch-corrected. Dashed line: the 35%
-  expected if the datasets were fully mixed. For cell lines it falls from 85% to 55%,
-  for PDX from 99% to 69%.
-- (**d**) Six model types compared by 10-fold cross-validated *R*² (1 − SSE/SST on out-of-fold
+    biologically: they are tumours grown in mice, while the others are cell lines grown in culture.
+- (**c**) Six model types compared by 10-fold cross-validated *R*² (1 − SSE/SST on out-of-fold
   predictions), one point per drug × cell line dataset (17 combinations; Ribociclib in
   GDSC-Sanger has too few samples). Multi-omics features, the same folds for every model.
   Black bars: mean.
@@ -82,9 +126,11 @@ which gives the same result either way. Figure 1a and c also show the uncorrecte
     regression (0.17).
   - Dropped (grey): random forest (0.17), gradient boosting (xgboost, 0.15) and k-nearest
     neighbours (0.14).
-- (**e**) Number of the 17 combinations in which each model type had the highest *R*².
-- (**f**, **g**) Cross-validated *R*² of the best of the three kept model types per drug and
-  dataset, with (**f**) multi-omics features and (**g**) the gene panel.
+- (**d**) How often each model type won: for each of the 17 drug × dataset combinations, the
+  model type with the highest cross-validated *R*² in panel c is counted once (17 in total).
+  Elastic net was best most often (6), although SVM has the highest mean *R*².
+- (**e**, **f**) Cross-validated *R*² of the best of the three kept model types per drug and
+  dataset, with (**e**) multi-omics features and (**f**) the gene panel.
   - The model type is shown under each value: EN, elastic net; SVM, support vector machine;
     PLS, partial least squares. n.t.: not trained (3 samples).
   - The panel roughly halves performance (mean *R*² 0.21 vs 0.10).
@@ -108,18 +154,30 @@ which gives the same result either way. Figure 1a and c also show the uncorrecte
 **Figure 3. Prediction of PDX tumour response with models trained on cell lines.**
 For each drug, the PDX response is predicted with the ensemble of the best models of the three
 cell line datasets. No model, setting or ensemble member was chosen using PDX.
-- (**a**) Spearman correlation between predicted cell line AUC and the PDX response; n is the
-  number of PDX models with a response.
-- (**b**) ROC AUC for separating tumours that kept growing under treatment (mRECIST progressive
-  disease, PD) from the rest; 0.5 is chance. Response classes come from Xeva (see Data).
-  PD / all classified models: Alpelisib 48/137, Buparlisib 53/164, Cetuximab 38/62,
+- (**a**) Spearman correlation between predicted cell line AUC and the PDX response (change in
+  tumour volume). n: number of PDX samples (one patient's tumour each, see Data) treated with the
+  drug and with a measured response.
+- (**b**) ROC AUC (area under the receiver operating characteristic curve) for separating
+  tumours that kept growing under treatment (mRECIST progressive disease, PD; class from Xeva)
+  from the rest, using the predicted AUC. 0.5 is chance, 1 is perfect separation.
+  PD / all classified samples: Alpelisib 48/137, Buparlisib 53/164, Cetuximab 38/62,
   Erlotinib 8/20, Ribociclib 71/164, Trametinib 9/36.
-- (**c**) Predicted AUC of the multi-omics ensemble by response class.
-  Boxes: median and interquartile range; points: PDX models.
+- (**c**) Predicted cell line AUC of the multi-omics ensemble for PD and not-PD tumours, with
+  the ROC AUC of panel b on top. Boxes: median and interquartile range; points: PDX samples.
+- (**d**–**f**) Cancer type of the PDX samples (from Xeva), multi-omics ensemble.
+  - (**d**) PDX samples per drug and cancer type. Trametinib: 35 pancreatic, 1 colorectal, 1 not
+    in Xeva.
+  - (**e**) Share of the variance explained by cancer type in the predicted AUC (blue) and in
+    the observed PDX response (grey), for drugs tested on at least two cancer types with ≥ 5
+    PDX samples each.
+  - (**f**) Spearman correlation over all PDX samples (grey) and within cancer types (blue: each
+    cancer type's mean rank removed first).
+  - (**e**, **f**) are computed on ranks, since predicted AUC and PDX response are on different
+    scales.
 
 The PDX response is a change in tumour volume, not a dose-response AUC, so *R*² is not
 meaningful here (about −9 everywhere; see `pdx_metrics.csv`). Only Erlotinib and Trametinib
-are clearly above chance, and both have few PDX models.
+are clearly above chance, and both have few PDX samples.
 
 ![Figure 4](results/figures/fig4_top_features.png)
 
@@ -137,76 +195,61 @@ a weight per feature that can be read directly.
 - **Labels:** expr, expression; CNV, copy number; mut, mutation. Gene symbols come from
   org.Hs.eg.db.
 
-Full list (top 20 per drug): `results/tables/top_features.csv`.
 
-## Methods
+## Pipeline
 
-The steps are rules in the `Snakefile`, one script each:
+Each box is a rule in the `Snakefile` and runs one script in `scripts/`.
 
-| Step | Script | What it does |
-|---|---|---|
-| 1 | `01_prepare_data.R` | Reads all datasets; log2(x + 1)-transforms PDX expression (raw FPKM, unlike the cell lines); encodes mutations as gene-level 0/1 (non-silent); averages repeated drug measurements; saves multi-omics and panel matrices and the Xeva PDX response measures |
-| 2 | `02_batch_correction.R` | `batchelor::regressBatches` per omic and feature set: removes each dataset's own mean per feature. Uses PDX omics, never PDX responses. Also the PCA before / after |
-| 3 | `03_model_comparison.R` | Six model types (elastic net, random forest, kNN, SVM, PLS, xgboost), 10-fold CV with the same folds, multi-omics data. Keeps the top 3 |
-| 4 | `04_train_models.R` | One model per drug × cell line dataset × feature set, 10-fold CV, best of the 3 types kept. Also trained on uncorrected data, for the comparison in `summary.csv` |
-| 5 | `05_cross_dataset.R` | Each best model applied to the other two cell line datasets |
-| 6 | `06_predict_pdx.R` | PDX prediction with a single best model and an ensemble |
-| 7 | `07_top_features.R` | Standardized weights of the elastic net models |
-| 8 | `08_figures.R` | All figures (from the result tables) and `results/tables/summary.csv` (all results, with and without batch correction) |
+```mermaid
+flowchart TB
+    prepare_data["01 · prepare_data<br/>clean the course data, read Xeva"]
+    batch_correction["02 · batch_correction<br/>regressBatches, PCA"]
+    model_comparison["03 · model_comparison<br/>6 model types, keep the best 3"]
+    train_models["04 · train_models<br/>best model per drug × dataset × feature set"]
+    cross_dataset["05 · cross_dataset<br/>predict the other cell line datasets"]
+    predict_pdx["06 · predict_pdx<br/>predict PDX, ROC AUC"]
+    pdx_cancer_type["06b · pdx_cancer_type<br/>PDX results by cancer type"]
+    top_features["07 · top_features<br/>elastic net weights"]
+    figures["08 · figures<br/>figures, summary.csv"]
+    prepare_data --> batch_correction
+    prepare_data --> model_comparison
+    prepare_data --> train_models
+    batch_correction --> train_models
+    model_comparison --> train_models
+    train_models --> cross_dataset
+    prepare_data --> predict_pdx
+    train_models --> predict_pdx
+    cross_dataset --> predict_pdx
+    predict_pdx --> pdx_cancer_type
+    batch_correction --> top_features
+    train_models --> top_features
+    batch_correction --> figures
+    model_comparison --> figures
+    train_models --> figures
+    cross_dataset --> figures
+    predict_pdx --> figures
+    pdx_cancer_type --> figures
+    top_features --> figures
+```
 
 Details:
+- **Preparation**: PDX expression is log2(x + 1)-transformed (raw FPKM, unlike the cell lines);
+  mutations are encoded as gene-level 0/1 (non-silent); repeated drug measurements are averaged.
+- **Batch correction**: `batchelor::regressBatches` per omic and feature set removes each
+  dataset's own mean per feature. It uses the PDX omics, never the PDX responses. It also corrects each dataset with its own samples only, so new data can be corrected the same way without retraining.
 - **Features**, chosen on the training samples only: top 5000 most variable expression genes, top
   5000 most variable CNV genes, genes mutated in ≥ 5% of samples. Gene panel: all CNV genes and
   mutations down to 1% (curated cancer genes, e.g. EGFR mutations for Erlotinib).
+- **Training**: one model per drug × cell line dataset × feature set, 10-fold CV, best of the 3
+  kept model types. The models are also trained on uncorrected data, for the comparison in
+  `summary.csv`.
 - **R²** is 1 − SSE/SST on out-of-fold predictions (not caret's squared correlation), so it can be negative.
 - **Single best model** per drug: of the best model of each cell line dataset, the one with the
   highest R² on the other cell line datasets. **Ensemble**: average of those models, leaving out
   any with CV R² ≤ 0.
-- **PDX evaluation**: R², Pearson and Spearman against the PDX response; and ROC AUC for
-  separating tumours that kept growing (mRECIST "progressive disease") from the rest, using
-  [Xeva](https://bioconductor.org/packages/Xeva/) response classes.
-- **Batch correction**: per-dataset z-scoring and fastMNN were tried too and did no better
-  (fastMNN mixed the datasets most but predicted PDX worst). regressBatches corrects each dataset
-  with its own samples only, so new data can be corrected the same way without retraining.
+- **PDX evaluation**: R², Pearson and Spearman against the PDX response, and ROC AUC for PD vs not
+  PD (see Data).
 - Models with fewer than 20 training samples are skipped, test sets with fewer than 10 too.
-
-## Data
-
-Original data: compgen2021 capstone project (MDC/BIMSB, Akalin lab),
-[archive](https://bimsbstatic.mdc-berlin.de/akalin/AAkalin_DrugResponse/prepared/AAkalin_DrugResponse-prepared.tar.gz),
-[task description](https://bimsbstatic.mdc-berlin.de/akalin/CompGenom2021/compgen2021Capstone/doc/CompGen2021CapstoneProject.html).
-
-| Dataset | Folder | What it is | Samples (multi-omics) | Role |
-|---|---|---|---|---|
-| CCLE | `CCLE/` | Cancer Cell Line Encyclopedia: a large panel of cancer cell lines, molecularly profiled and drug-screened at the Broad Institute | 1,291 (1,722 with panel data) | training / testing |
-| GDSC-Broad | `GDSC_broad/` | Genomics of Drug Sensitivity in Cancer (Sanger Institute) drug screens, for the cell lines whose omics come from the Broad Institute. The cell lines are all in CCLE too, with separately processed omics and nearly the same drug responses (r = 0.96–1.00 for five drugs) | 507 | training / testing |
-| GDSC-Sanger | `GDSC_sanger/` | GDSC drug screens for the cell lines profiled at the Sanger Institute; no overlap with GDSC-Broad, 54 cell lines also in CCLE | 281 | training / testing |
-| PDX | `PDX_all/` | Patient-derived xenografts from the Novartis PDX Encyclopedia (Gao et al., *Nat Med* 2015): pieces of patient tumours grown and treated in mice. Closer to real tumours than cell lines grown in plastic | 399 | **testing only** |
-
-Drugs: Alpelisib, Buparlisib (PI3K), Cetuximab, Erlotinib (EGFR), Ribociclib (CDK4/6), Trametinib (MEK).
-Cell line response = AUC of the dose-response curve; lower = more sensitive. The PDX response
-is a change in tumour volume (see Xeva below).
-
-| Folder in `data/raw/` | What it is | Used |
-|---|---|---|
-| `CCLE/`, `GDSC_broad/`, `GDSC_sanger/`, `PDX_all/` | Per dataset: `all_intersect_genes/` (expression, CNV, mutations of the ~18,000 genes shared by all datasets), `oncoKB_intersect_genes/` (CNV and mutations of the 882 OncoKB cancer genes, the gene panel) and `drug_response/` | yes |
-| `auxiliary/` | Gene lists from the course: `all_intersect_genes.tsv` (18,355 Ensembl IDs shared by all datasets), `oncoKB_intersect_genes.tsv` (the 882 panel genes) and `oncoKB_gene_list.tsv` (all 1,064 OncoKB genes with symbol, Entrez and Ensembl IDs) | no: the omics files are already limited to these genes |
-| `xeva/` | `Xeva_PDXE_tsv.tar.gz`: the Novartis PDX Encyclopedia curated with the Bioconductor package [Xeva](https://bioconductor.org/packages/Xeva/) (ORCESTRA, [Zenodo record 19354439](https://zenodo.org/records/19354439)) | yes, for the PDX response classes |
-
-**Xeva.** The course gives one PDX response value per tumour and drug. Xeva has the same PDX
-models with the tumour volume curves and several response measures. `01_prepare_data.R` reads two
-of its tables: `model.tsv` (model → patient and drug) and `sensitivity_model.tsv` (response per
-model). It saves the mRECIST class, best response, best average response, slope and AUC of the
-growth curve for the 399 PDX samples and six drugs (`data/processed/PDX_xeva_response.rds`).
-They serve two purposes:
-- They show what the course PDX value is: Xeva's best % change in tumour volume, rescaled
-  (Spearman 0.93–0.99). It cannot be on the same scale as the cell line AUC.
-- They give the mRECIST classes used in Figure 3b, c: CR / PR (tumour shrank), SD (stable) and
-  PD (kept growing).
-
-Xeva also has its own PDX omics, including continuous copy numbers. The course PDX copy numbers
-are almost all neutral (~1% gains or losses, vs 40–55% in cell lines). Rebuilding them from Xeva
-did not improve PDX prediction, so the models use only the course omics.
 
 ## How to run
 
@@ -220,29 +263,18 @@ Needs R 4.5 and Snakemake (≥ 8), with these R packages:
 2. From the project root, with R and Snakemake on the PATH:
    ```
    snakemake -n            # show what would run
-   snakemake --cores 12    # run everything that is missing or out of date
+   snakemake --cores <n_core>    # run everything that is missing or out of date
    ```
-   The model comparison and the training take about an hour each on 12 cores; the rest take
-   minutes. A step reruns only when its script, its inputs or the R/ helpers it uses change, so
-   editing `scripts/08_figures.R` only redraws the figures. Logs: `results/logs/`.
-
-```
-├── Snakefile          the pipeline
-├── data/raw/          original data, never modified (not in git): 4 datasets, auxiliary/, xeva/
-├── data/processed/    cleaned and batch-corrected matrices (not in git)
-├── R/                 functions used by the scripts
-├── scripts/           analysis steps, in run order
-├── models/            fitted models, one folder per feature set and correction (not in git)
-└── results/           figures/, tables/, logs/
-```
 
 ## Limitations
 - Cell line AUC and PDX tumour response measure different things, so PDX results are judged on
   ranking only.
 - PDX sample sizes are small for Erlotinib and Trametinib, and responders (shrinking tumours) are
   rare for every drug (3–12 per drug), so PD vs not PD is used instead.
-- The gene panel has more CCLE cell lines than the multi-omics data (no expression needed),
-  which slightly favours it.
 - The feature filter is fitted once per training set, not inside each CV fold, and the best model
   type is chosen by CV R²; both make CV R² slightly optimistic. Cross-dataset and PDX results are not affected.
 - The top features come from one linear model type and show association, not causation.
+
+## Author
+Mehdi Esmaeili-Fard (mehdi.esmaeilifard@gmail.com).  
+Completion date: September 2021.
